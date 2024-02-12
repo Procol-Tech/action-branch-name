@@ -12,6 +12,9 @@ function getBranchName(eventName, payload) {
         case 'pull_request':
             branchName = payload.pull_request.head.ref;
             break;
+        case 'merge_group':
+            branchName = "chore/merge_group";
+            break;
         default:
             throw new Error(`Invalid event name: ${eventName}`);
     }
@@ -26,7 +29,7 @@ async function run() {
             core.setFailed(`Invalid event: ${eventName}`);
             return;
         }
-
+        
         const branch = getBranchName(eventName, github.context.payload);
         core.info(`Branch name: ${branch}`);
         // Check if branch is to be ignored
